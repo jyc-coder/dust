@@ -1,5 +1,7 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+
 const getParameters = {
-    serviceKey: '아까 위에서 일반 인증키 (Decoding) 이라고 되어있던 부분을 여기 입력해주세요.',
+    serviceKey: '+Ca+bXO7ZLbcxTKbO2Wwi/1KCksLReg2XcPTPWmUUPapLNOZ0byAz4k6gzZEnyITf4C6e4mMVXBzf+8x8ivIlQ==',
     returnType: 'json',
     numOfRows: '100',
     pageNo: '1',
@@ -7,7 +9,22 @@ const getParameters = {
     ver: '1.0',
 }
 
-const fetchData = async () => {
-    const response = await axios.get('/api/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty', { params: getParameters })
-    //여기서 set 해주면 좋겠죠?
-}
+export const dustApi = createApi({
+    reducerPath: 'dustApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: '/api/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
+    }),
+    endpoints: (builder) => ({
+        getDust: builder.query({
+            query: (sidoname) => ({
+                url: '',
+                params: {
+                    ...getParameters,
+                    sidoName: sidoname,
+                },
+            }),
+        }),
+    }),
+})
+
+export const { useGetDustQuery } = dustApi
