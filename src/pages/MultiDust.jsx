@@ -1,7 +1,21 @@
 import React from 'react'
+import DustCard from '../components/DustCard'
+import DustCards from '../components/DustCards'
+import LocationSelect from '../components/LocationSelect'
 
-function MultiDust() {
-    return <div>대충 목록이 표시된 컴포넌트</div>
+function MultiDust({ dustList }) {
+    // api 데이터 결과값
+    console.log(dustList)
+    const dusts = dustList?.response.body.items
+    console.log(dusts)
+    return (
+        <div>
+            <LocationSelect dustList={dustList} />
+            {dusts?.map((dust) => {
+                return <DustCards key={dust.stationName} sidoName={dust.sidoName} stationName={dust.stationName} pm10Grade={dust.pm10Grade} pm10Value={dust.pm10Value} dataTime={dust.dataTime} />
+            })}
+        </div>
+    )
 }
 
 export default MultiDust

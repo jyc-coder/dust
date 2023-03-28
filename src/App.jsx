@@ -28,7 +28,7 @@ function App() {
         <div>
             <Routes>
                 <Route path="/" element={<SingleDust dustList={dustList} oneDust={oneDust} />} />
-                <Route path="multi" element={<MultiDust />} />
+                <Route path="multi" element={<MultiDust dustList={dustList} />} />
                 <Route path="favorite" element={<FavoriteDust />} />
             </Routes>
             <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
