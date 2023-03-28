@@ -5,32 +5,25 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import { useGetDustQuery } from '../apis/axios'
+import { changePmData, changeSido, changeStation, useDust } from '../store/slices/dust'
 
-function LocationSelect({ sido, setSido, station, setStation, pmData, setPmData, dust }) {
-    useEffect(() => {
-        setStation('한강대로')
-        // api 데이터 결과값
-        const sampleData = dust.response.body.items.find((dust) => dust.stationName === '한강대로')
-        setPmData({ ...pmData, pm10Grade: sampleData.pm10Grade, pm10Value: sampleData.pm10Value, dataTime: sampleData.dataTime })
-    }, [])
+function LocationSelect({ dustList }) {
+    const { dust, dispatch } = useDust()
+    const { sido, station } = dust
 
     // api 데이터 결과값
-    const dustList = dust.response.body.items
 
-    /** stationName을 선택하는 순간 dusList에서 같은 stationName 만 가져오는 메소드 */
-    const singleDust = (event) => dustList.find((dust) => dust.stationName === event.target.value)
+    const dusts = dustList.response.body.items
 
     /** sido 를 선택했을때 sido의 값을 변경하는 */
     const handleSido = (event) => {
-        setSido(event.target.value)
+        dispatch(changeSido(event.target.value))
     }
 
     /** 선택된 stationName을 바탕으로 pmData를 변경하는 메소드 */
     const handleStation = (event) => {
-        setStation(event.target.value)
-        setPmData({ ...pmData, pm10Grade: singleDust(event).pm10Grade, pm10Value: singleDust(event).pm10Value, dataTime: singleDust(event).dataTime })
-        // sido 선택으로 저장한 데이터를 바탕으로 선택
-        // 선택한 지역의 station에 해당하는 정보를 가져온다.
+        dispatch(changeStation(event.target.value))
+        dispatch(changePmData(dusts.find((dust) => dust.stationName === event.target.value)))
     }
 
     return (
@@ -59,8 +52,8 @@ function LocationSelect({ sido, setSido, station, setStation, pmData, setPmData,
             </FormControl>
             <FormControl sx={{ minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-label">지역 선택</InputLabel>
-                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={station} label="station" onChange={(e) => handleStation(e)} disabled={sido === ''}>
-                    {dustList?.map((item) => {
+                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={station} label="station" onChange={(e) => handleStation(e)}>
+                    {dusts?.map((item) => {
                         return (
                             <MenuItem key={item.stationName} value={item.stationName}>
                                 {item.stationName}

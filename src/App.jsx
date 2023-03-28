@@ -1,29 +1,24 @@
 import './App.css'
 import React, { useEffect } from 'react'
 import { useGetDustQuery } from './apis/axios'
-import SingleDust from './components/SingleDust'
-import { Link, Navigate, Route, Routes } from 'react-router-dom'
-import FavoriteDust from './components/FavoriteDust'
-import MultiDust from './components/MultiDust'
-import Button from '@mui/material/Button'
+import SingleDust from './pages/SingleDust'
+import { Link, Route, Routes } from 'react-router-dom'
+import FavoriteDust from './pages/FavoriteDust'
+import MultiDust from './pages/MultiDust'
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching'
 import ListAltIcon from '@mui/icons-material/ListAlt'
 import GradeIcon from '@mui/icons-material/Grade'
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
+import { changeValue, useDust } from './store/slices/dust'
+import { SimCardDownload } from '@mui/icons-material'
 function App() {
-    const [sido, setSido] = React.useState('서울')
-    const [station, setStation] = React.useState('')
-    const [value, setValue] = React.useState(0)
-    const [pmData, setPmData] = React.useState([
-        {
-            pm10Grade: '',
-            pm10Value: '',
-            dataTime: '',
-        },
-    ])
+    const { dust, dispatch } = useDust()
+    const { value, sido, station } = dust
+    const { data: dustList, isLoading, isError } = useGetDustQuery(sido)
 
-    const { data: dust, isLoading, isError } = useGetDustQuery(sido)
-
+    const oneDust = dustList?.response.body.items.find((dust) => dust.stationName === station)
+        ? dustList?.response.body.items.find((dust) => dust.stationName === station)
+        : dustList?.response.body.items[0]
     /** sidoName의 값을 설정하는 메소드  */
     if (isLoading) return <div>로딩중</div>
 
@@ -32,7 +27,7 @@ function App() {
     return (
         <div>
             <Routes>
-                <Route path="single" element={<SingleDust sido={sido} dust={dust} setSido={setSido} station={station} setStation={setStation} pmData={pmData} setPmData={setPmData} />} />
+                <Route path="/" element={<SingleDust dustList={dustList} oneDust={oneDust} />} />
                 <Route path="multi" element={<MultiDust />} />
                 <Route path="favorite" element={<FavoriteDust />} />
             </Routes>
@@ -40,10 +35,10 @@ function App() {
                 <BottomNavigation
                     value={value}
                     onChange={(event, newValue) => {
-                        setValue(newValue)
+                        dispatch(changeValue(newValue))
                     }}
                 >
-                    <BottomNavigationAction label="single" component={Link} to={'/single'} icon={<LocationSearchingIcon />} />
+                    <BottomNavigationAction label="single" component={Link} to={'/'} icon={<LocationSearchingIcon />} />
                     <BottomNavigationAction label="mulit" component={Link} to={'/multi'} icon={<ListAltIcon />} />
                     <BottomNavigationAction label="favorite" component={Link} to={'/favorite'} icon={<GradeIcon />} />
                 </BottomNavigation>
