@@ -3,13 +3,35 @@ import Box from '@mui/material/Box'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
-
-import { Container } from '@mui/material'
+import StarRateIcon from '@mui/icons-material/StarRate'
+import { Container, IconButton, ToggleButton } from '@mui/material'
 import { GRADE } from './../constants/pmgrade'
-import { useGetDustQuery } from '../apis/axios'
-import { changePmData, useDust } from '../store/slices/dust'
+import { useState } from 'react'
 
-function DustCards({ sidoName, stationName, pm10Grade, pm10Value, dataTime }) {
+function DustCards({ sidoName, stationName, pm10Grade, pm10Value, dataTime, locationList }) {
+    const [selected, setSelected] = useState(false)
+
+    const toggleData = () => {
+        if (selected) {
+            locationList.splice(locationList.indexOf(stationName), 1)
+            localStorage.setItem('location', locationList)
+            setSelected(false)
+            console.log(locationList)
+        } else {
+            locationList.push(stationName)
+            localStorage.setItem('location', locationList)
+            setSelected(true)
+            console.log(locationList)
+        }
+    }
+    useEffect(() => {
+        if (locationList.includes(stationName)) {
+            setSelected(true)
+        } else {
+            setSelected(false)
+        }
+    }, [])
+
     return (
         // 카드 컴포넌트
         <Card sx={{ minWidth: 275, marginBottom: '20px', background: '#6c770b' }}>
@@ -47,6 +69,15 @@ function DustCards({ sidoName, stationName, pm10Grade, pm10Value, dataTime }) {
                     ({dataTime})
                 </Typography>
             </CardContent>
+            <ToggleButton
+                value="check"
+                selected={selected}
+                onChange={() => {
+                    toggleData()
+                }}
+            >
+                <StarRateIcon />
+            </ToggleButton>
         </Card>
     )
 }
