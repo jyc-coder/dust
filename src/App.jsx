@@ -16,9 +16,9 @@ function App() {
     const { value, sido, station } = dust
     const { data: dustList, isLoading, isError } = useGetDustQuery(sido)
 
-    const oneDust = dustList?.response.body.items.find((dust) => dust.stationName === station)
+    /*   const oneDust = dustList?.response.body.items.find((dust) => dust.stationName === station)
         ? dustList?.response.body.items.find((dust) => dust.stationName === station)
-        : dustList?.response.body.items[0]
+        : dustList?.response.body.items[0] */
     /** sidoName의 값을 설정하는 메소드  */
 
     if (isLoading) return <div>로딩중</div>
@@ -28,7 +28,7 @@ function App() {
     return (
         <div>
             <Routes>
-                <Route path="/" element={<SingleDust dustList={dustList} oneDust={oneDust} />} />
+                <Route path="/" element={<SingleDust dustList={dustList} />} />
                 <Route path="multi" element={<MultiDust dustList={dustList} />} />
                 <Route path="favorite" element={<FavoriteDust />} />
             </Routes>
