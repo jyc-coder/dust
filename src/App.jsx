@@ -40,7 +40,7 @@ function App() {
                     }}
                 >
                     <BottomNavigationAction label="single" component={Link} to={'/'} icon={<LocationSearchingIcon />} />
-                    <BottomNavigationAction label="mulit" component={Link} to={'/multi'} icon={<ListAltIcon />} />
+                    <BottomNavigationAction label="multi" component={Link} to={'/multi'} icon={<ListAltIcon />} />
                     <BottomNavigationAction label="favorite" component={Link} to={'/favorite'} icon={<GradeIcon />} />
                 </BottomNavigation>
             </Paper>
