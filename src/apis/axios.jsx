@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const VITE_API_KEY = import.meta.env.VITE_API_KEY
+console.log('meta.env', import.meta.env)
+console.log('api key', VITE_API_KEY)
 const getParameters = {
     serviceKey: VITE_API_KEY,
     returnType: 'json',

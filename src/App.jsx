@@ -20,7 +20,7 @@ function App() {
         ? dustList?.response.body.items.find((dust) => dust.stationName === station)
         : dustList?.response.body.items[0]
     /** sidoName의 값을 설정하는 메소드  */
-    console.log(import.meta.env.VITE_API_KEY)
+
     if (isLoading) return <div>로딩중</div>
 
     if (isError) return <div>에러발생</div>

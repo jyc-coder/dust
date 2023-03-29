@@ -13,7 +13,6 @@ function LocationSelect({ dustList }) {
     const { sido, station } = dust
     const location = useLocation()
 
-    console.log(location.pathname)
     // api 데이터 결과값
 
     const dusts = dustList.response.body.items
