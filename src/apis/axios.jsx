@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const VITE_API_KEY = import.meta.env.VITE_API_KEY
-console.log('meta.env', import.meta.env)
-console.log('api key', VITE_API_KEY)
+
 const getParameters = {
     serviceKey: VITE_API_KEY,
     returnType: 'json',
@@ -14,7 +13,7 @@ const getParameters = {
 export const dustApi = createApi({
     reducerPath: 'dustApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
+        baseUrl: 'api/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
     }),
     endpoints: (builder) => ({
         getDust: builder.query({
