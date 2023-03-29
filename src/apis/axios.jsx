@@ -14,7 +14,7 @@ const getParameters = {
 export const dustApi = createApi({
     reducerPath: 'dustApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: '/api/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
+        baseUrl: 'https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
     }),
     endpoints: (builder) => ({
         getDust: builder.query({
