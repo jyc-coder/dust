@@ -6,26 +6,20 @@ import Card from '@mui/material/Card'
 
 import { Container } from '@mui/material'
 import { GRADE } from './../constants/pmgrade'
-import { useGetDustQuery } from '../apis/axios'
 import { changePmData, useDust } from '../store/slices/dust'
 
 function DustCard({ dustList }) {
-    const { dust, dispatch } = useDust()
-    const { pmData } = dust
-    useEffect(() => {
-        // 맨 처음에 로드될때는 서울 한강대로의 데이터를 가져온다
-        dispatch(changePmData(dustList?.response.body.items[0]))
-    }, [])
+    const { sidoName, stationName, pm10Grade, pm10Value, dataTime } = dustList
     return (
         // 카드 컴포넌트
         <Card sx={{ minWidth: 275, marginBottom: '20px', background: '#6c770b' }}>
             <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                     <Typography sx={{ fontSize: 20 }} color="white" gutterBottom>
-                        {pmData.sidoName}
+                        {sidoName}
                     </Typography>
                     <Typography sx={{ fontSize: 15, paddingTop: '5px' }} color="white" gutterBottom>
-                        {pmData.stationName}
+                        {stationName}
                     </Typography>
                 </Box>
                 <Container maxWidth="sm" sx={{ display: ' flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -42,15 +36,15 @@ function DustCard({ dustList }) {
                         }}
                     >
                         <Typography variant="h5" component="div" color="white" fontWeight="700">
-                            {pmData.pm10Grade === null ? '측정불가' : GRADE[pmData.pm10Grade]}
+                            {pm10Grade === null ? '측정불가' : GRADE[pm10Grade]}
                         </Typography>
                     </Box>
                 </Container>
                 <Typography sx={{ mb: 1.5 }} color="white" marginTop="10px">
-                    미세먼지 수치 : {pmData.pm10Value}
+                    미세먼지 수치 : {pm10Value}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="white" marginTop="10px">
-                    ({pmData.dataTime})
+                    ({dataTime})
                 </Typography>
             </CardContent>
         </Card>

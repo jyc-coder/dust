@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     loctions: [],

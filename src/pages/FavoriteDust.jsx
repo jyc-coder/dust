@@ -1,6 +1,7 @@
 import React from 'react'
-import { useGetDustQuery } from '../apis/axios'
+
 import DustCards from '../components/DustCards'
+import { useGetDustQuery } from '../store/apis/axios'
 
 function FavoriteDust() {
     const { data: dustList, isLoading, isError } = useGetDustQuery('전국')

@@ -4,7 +4,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import { useGetDustQuery } from '../apis/axios'
+import { useGetDustQuery } from '../store/apis/axios'
 import { changePmData, changeSido, changeStation, useDust } from '../store/slices/dust'
 import { useLocation } from 'react-router-dom'
 
@@ -15,18 +15,11 @@ function LocationSelect({ dustList }) {
 
     // api 데이터 결과값
 
-    const dusts = dustList.response.body.items
-
     /** sido 를 선택했을때 sido의 값을 변경하는 */
-    const handleSido = (event) => {
-        dispatch(changeSido(event.target.value))
-    }
+    const handleSido = (event) => {}
 
     /** 선택된 stationName을 바탕으로 pmData를 변경하는 메소드 */
-    const handleStation = (event) => {
-        dispatch(changeStation(event.target.value))
-        dispatch(changePmData(dusts.find((dust) => dust.stationName === event.target.value)))
-    }
+    const handleStation = (event) => {}
     if (location.pathname === '/multi') {
         return (
             <Box sx={{ minWidth: 300, marginBottom: '10px' }}>
@@ -82,13 +75,13 @@ function LocationSelect({ dustList }) {
             <FormControl sx={{ minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-label">지역 선택</InputLabel>
                 <Select labelId="demo-simple-select-label" id="demo-simple-select" value={station} label="station" onChange={(e) => handleStation(e)}>
-                    {dusts?.map((item) => {
+                    {/*  {dusts?.map((item) => {
                         return (
                             <MenuItem key={item.stationName} value={item.stationName}>
                                 {item.stationName}
                             </MenuItem>
                         )
-                    })}
+                    })} */}
                 </Select>
             </FormControl>
         </Box>
