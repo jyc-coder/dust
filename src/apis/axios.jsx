@@ -15,7 +15,7 @@ export const dustApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
         prepareHeaders: (headers) => {
-            headers.set('accept', 'application/json', 'text/plain', '*/*')
+            headers.set('accept', 'application/json, text/plain, */*')
             return headers
         },
     }),
