@@ -1,3 +1,4 @@
+import { QuizSharp } from '@mui/icons-material'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
@@ -13,6 +14,7 @@ export const dustApi = createApi({
     reducerPath: 'dustApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',
+        paramSerializer: (params) => qs.stringify(params, { encode: false }),
         prepareHeaders: (headers) => {
             headers.set('accept', 'application/json, text/plain, */*')
             return headers
