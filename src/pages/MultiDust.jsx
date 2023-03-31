@@ -4,9 +4,11 @@ import LocationSelect from '../components/LocationSelect'
 import { useGetDustQuery } from '../store/apis/axios'
 import { returnOnlyStations } from '../store/slices/dustSlice'
 import { useLocationSlice } from '../store/slices/locationSlice'
+import { useFavoriteSlice } from './../store/slices/favoriteSlice'
 
 function MultiDust() {
-    const { allLocation, dispatch } = useLocationSlice()
+    const { favorite, dispatch } = useFavoriteSlice()
+    const { allLocation } = useLocationSlice()
     // 단일 지역의 미세먼지 정보를 가져오는 쿼리
     const { data: dusts, isLoading, isError } = useGetDustQuery(allLocation.sidoName)
 
@@ -25,7 +27,7 @@ function MultiDust() {
         <div>
             <LocationSelect location={allLocation} dispatch={dispatch} single={false} stationList={stationList} />
             {dusts?.map((dust) => {
-                return <DustCard dust={dust} />
+                return <DustCard dust={dust} favorite={favorite} dispatch={dispatch} />
             })}
         </div>
     )

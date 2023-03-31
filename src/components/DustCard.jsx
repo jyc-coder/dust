@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
-
-import { Container } from '@mui/material'
+import StarRateIcon from '@mui/icons-material/StarRate'
+import { Container, ToggleButton } from '@mui/material'
 import { GRADE } from './../constants/pmgrade'
+import { addFavoriteItem, deleteFavoriteItem } from '../store/slices/favoriteSlice'
+import { useCallback } from 'react'
 
-function DustCard({ dust }) {
+function DustCard({ dust, favorite, dispatch, single }) {
+    const [selected, setSelected] = useState(false)
+    const isFavorite = useMemo(() => favorite?.some((element) => element.sidoName === dust.sidoName && element.stationName === dust.stationName), [favorite, dust])
+
     const { sidoName, stationName, pm10Grade, pm10Value, dataTime } = dust
-
+    const handleFavorite = useCallback(() => {
+        isFavorite ? dispatch(deleteFavoriteItem({ sidoName: dust.sidoName, stationName: dust.stationName })) : dispatch(addFavoriteItem({ sidoName: dust.sidoName, stationName: dust.stationName }))
+    }, [isFavorite, dust])
     return (
         // 카드 컴포넌트
         <Card sx={{ minWidth: 275, marginBottom: '20px', background: '#6c770b' }}>
@@ -46,6 +53,17 @@ function DustCard({ dust }) {
                 <Typography sx={{ mb: 1.5 }} color="white" marginTop="10px">
                     ({dataTime})
                 </Typography>
+                {!single && (
+                    <ToggleButton
+                        value="check"
+                        selected={isFavorite}
+                        onChange={() => {
+                            handleFavorite()
+                        }}
+                    >
+                        <StarRateIcon />
+                    </ToggleButton>
+                )}
             </CardContent>
         </Card>
     )

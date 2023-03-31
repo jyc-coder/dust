@@ -34,7 +34,7 @@ function SingleDust() {
     return (
         <div>
             <LocationSelect location={myLocation} dispatch={dispatch} single={true} stationList={stationList} />
-            <DustCard dust={dust} />
+            <DustCard dust={dust} single={true} />
         </div>
     )
 }

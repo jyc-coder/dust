@@ -1,16 +1,23 @@
 import React from 'react'
+import DustCard from '../components/DustCard'
 
-import DustCards from '../components/DustCards'
-import { useGetDustQuery } from '../store/apis/axios'
+import { useGetMultipleDustsQuery } from '../store/apis/axios'
+import { selectDustByStations } from '../store/slices/dustSlice'
+import { useFavoriteSlice } from '../store/slices/favoriteSlice'
 
 function FavoriteDust() {
-    const { data: dustList, isLoading, isError } = useGetDustQuery('전국')
+    const { favorite, dispatch, favoriteSidos } = useFavoriteSlice()
 
-    const locationList = localStorage.getItem('location') ? localStorage.getItem('location').split(',') : []
-    const favList = locationList.map((location) => {
-        return dustList?.response.body.items.find((dust) => dust.stationName === location)
+    const {
+        data: dusts,
+        isLoading,
+        isError,
+    } = useGetMultipleDustsQuery(favoriteSidos, {
+        selectFromResult: (result) => ({
+            ...result,
+            data: selectDustByStations(result, favorite),
+        }),
     })
-    console.log(favList)
 
     /** sidoName의 값을 설정하는 메소드  */
     if (isLoading) return <div>로딩중</div>
@@ -19,18 +26,8 @@ function FavoriteDust() {
 
     return (
         <div>
-            {favList?.map((fav) => {
-                return (
-                    <DustCards
-                        key={fav.stationName}
-                        sidoName={fav.sidoName}
-                        stationName={fav.stationName}
-                        pm10Grade={fav.pm10Grade}
-                        pm10Value={fav.pm10Value}
-                        dataTime={fav.dataTime}
-                        locationList={locationList}
-                    />
-                )
+            {dusts?.map((dust) => {
+                return <DustCard dust={dust} favorite={favorite} dispatch={dispatch} />
             })}
         </div>
     )
