@@ -1,31 +1,31 @@
 import React, { useEffect } from 'react'
 import DustCard from '../components/DustCard'
-import DustCards from '../components/DustCards'
 import LocationSelect from '../components/LocationSelect'
+import { useGetDustQuery } from '../store/apis/axios'
+import { returnOnlyStations } from '../store/slices/dustSlice'
+import { useLocationSlice } from '../store/slices/locationSlice'
 
-function MultiDust({ dustList }) {
-    // api 데이터 결과값
+function MultiDust() {
+    const { allLocation, dispatch } = useLocationSlice()
+    // 단일 지역의 미세먼지 정보를 가져오는 쿼리
+    const { data: dusts, isLoading, isError } = useGetDustQuery(allLocation.sidoName)
 
-    let locationList = localStorage.getItem('location') ? localStorage.getItem('location').split(',') : []
+    // 선택된 시/도 내의 모든 지역의 이름을 가져오는 쿼리
+    const { data: stationList } = useGetDustQuery(allLocation.sidoName, {
+        selectFromResult: (result) => ({
+            ...result,
+            data: returnOnlyStations(result),
+        }),
+    })
 
-    useEffect(() => {
-        console.log(locationList)
-    }, [locationList])
+    if (isLoading) return <div>로딩중</div>
+
+    if (isError) return <div>에러발생</div>
     return (
         <div>
-            <LocationSelect dustList={dustList} />
+            <LocationSelect location={allLocation} dispatch={dispatch} single={false} stationList={stationList} />
             {dusts?.map((dust) => {
-                return (
-                    <DustCards
-                        key={dust.stationName}
-                        sidoName={dust.sidoName}
-                        stationName={dust.stationName}
-                        pm10Grade={dust.pm10Grade}
-                        pm10Value={dust.pm10Value}
-                        dataTime={dust.dataTime}
-                        locationList={locationList}
-                    />
-                )
+                return <DustCard dust={dust} />
             })}
         </div>
     )
