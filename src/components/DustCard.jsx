@@ -6,10 +6,10 @@ import Card from '@mui/material/Card'
 
 import { Container } from '@mui/material'
 import { GRADE } from './../constants/pmgrade'
-import { changePmData, useDust } from '../store/slices/dust'
 
-function DustCard({ dustList }) {
-    const { sidoName, stationName, pm10Grade, pm10Value, dataTime } = dustList
+function DustCard({ dust }) {
+    const { sidoName, stationName, pm10Grade, pm10Value, dataTime } = dust
+
     return (
         // 카드 컴포넌트
         <Card sx={{ minWidth: 275, marginBottom: '20px', background: '#6c770b' }}>

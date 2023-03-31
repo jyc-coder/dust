@@ -3,12 +3,13 @@ import { useGetDustQuery } from '../store/apis/axios'
 import DustCard from '../components/DustCard'
 import LocationSelect from '../components/LocationSelect'
 import { useLocationSlice } from '../store/slices/locationSlice'
-import { selectDustByStation } from '../store/slices/dustSlice'
+import { returnOnlyStations, selectDustByStation } from '../store/slices/dustSlice'
 
 function SingleDust() {
     const { myLocation, dispatch } = useLocationSlice()
+    // 단일 지역의 미세먼지 정보를 가져오는 쿼리
     const {
-        data: dustList,
+        data: dust,
         isLoading,
         isError,
     } = useGetDustQuery(myLocation.sidoName, {
@@ -18,20 +19,22 @@ function SingleDust() {
         }),
     })
 
-    console.log(dustList)
-
-    /*   const oneDust = dustList?.response.body.items.find((dust) => dust.stationName === station)
-        ? dustList?.response.body.items.find((dust) => dust.stationName === station)
-        : dustList?.response.body.items[0] */
-    /** sidoName의 값을 설정하는 메소드  */
+    /* const { data: dustList } = useGetDustQuery(myLocation.sidoName) */
+    // 선택된 시/도 내의 모든 지역의 이름을 가져오는 쿼리
+    const { data: stationList } = useGetDustQuery(myLocation.sidoName, {
+        selectFromResult: (result) => ({
+            ...result,
+            data: returnOnlyStations(result),
+        }),
+    })
 
     if (isLoading) return <div>로딩중</div>
 
     if (isError) return <div>에러발생</div>
     return (
         <div>
-            <LocationSelect location={myLocation} dustList={dustList} />
-            <DustCard dustList={dustList} />
+            <LocationSelect location={myLocation} dispatch={dispatch} single={true} stationList={stationList} />
+            <DustCard dust={dust} />
         </div>
     )
 }
