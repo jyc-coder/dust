@@ -6,9 +6,8 @@ import LocationSelect from '../components/LocationSelect'
 function MultiDust({ dustList }) {
     // api 데이터 결과값
 
-    const dusts = dustList?.response.body.items
-
     let locationList = localStorage.getItem('location') ? localStorage.getItem('location').split(',') : []
+
     useEffect(() => {
         console.log(locationList)
     }, [locationList])
