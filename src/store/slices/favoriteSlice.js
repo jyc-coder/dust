@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
+import { useMemo } from 'react'
 
 const initialState = {
-    loctions: [],
+    locations: [],
 }
 
 export const favoriteSlice = createSlice({
@@ -13,7 +14,7 @@ export const favoriteSlice = createSlice({
             state.locations = [...state.locations, action.payload]
         },
         deleteFavoriteItem: (state, action) => {
-            state.locations = state.locations.filter((element) => !(element.sidoName === action.payload.stationName && element.sidoName === action.payload.sidoName))
+            state.locations = state.locations.filter((element) => !(element.sidoName === action.payload.sidoName && element.stationName === action.payload.stationName))
         },
     },
 })

@@ -2,7 +2,7 @@ import { QuizSharp } from '@mui/icons-material'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
-const getParameters = {
+const args = {
     serviceKey: VITE_API_KEY,
     returnType: 'json',
     numOfRows: '642',
@@ -25,7 +25,7 @@ export const dustApi = createApi({
             query: (sidoName) => ({
                 url: '',
                 params: {
-                    ...getParameters,
+                    ...args,
                     sidoName,
                 },
             }),
@@ -36,7 +36,7 @@ export const dustApi = createApi({
 
         /** 한 쿼리에서 여러번 요청을 보내고자 할때 사용하는 방식 */
         getMultipleDusts: builder.query({
-            async queryFn(_arg, queryApi, _extraOptions, fetchWithBQ) {
+            async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
                 const result = await _arg.reduce(async (promise, sidoName) => {
                     const argResult = await fetchWithBQ({
                         url: '',
